@@ -828,6 +828,8 @@ def main():
                       help='Log all output to LOGFILE. No output to STDOUT.')
     parser.add_option('--recheck', action='store_true',
                       help='Recheck already downloaded packages for changes.')
+    parser.add_option('--catalogs-only', action="store_true", dest="catalogs_only",
+                      help='Only download catalogs. No packages.')
 
     options, unused_arguments = parser.parse_args()
     if reposadocommon.validPreferences():
@@ -835,7 +837,7 @@ def main():
             reposadocommon.print_stderr('ERROR: curl tool not found at %s',
                                         reposadocommon.pref('CurlPath'))
             exit(-1)
-        if not reposadocommon.pref('LocalCatalogURLBase'):
+        if options.catalogs_only or not reposadocommon.pref('LocalCatalogURLBase'):
             download_packages = False
         else:
             download_packages = True
